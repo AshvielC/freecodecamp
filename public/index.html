@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FarmConnect Marketplace</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav wrap" aria-label="Primary navigation">
+        <a class="brand" href="#home" data-page="home">🌱 FarmConnect</a>
+        <button class="menu-toggle" type="button" aria-label="Open navigation">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="#marketplace" data-page="marketplace">Browse Produce</a>
+          <a href="#farmer-dashboard" data-page="farmer-dashboard">Farmer</a>
+          <a href="#buyer-dashboard" data-page="buyer-dashboard">Buyer</a>
+          <a href="#orders" data-page="orders">Orders</a>
+          <a href="#messages" data-page="messages">Messages</a>
+          <a href="#admin" data-page="admin">Admin</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="page active hero">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="eyebrow">Direct farm-to-business sourcing</p>
+            <h1>Fresh local produce for restaurants, resorts, markets, and supermarkets.</h1>
+            <p class="hero-copy">
+              FarmConnect Marketplace helps farmers list produce, manage stock, negotiate bulk orders,
+              coordinate delivery or pickup, and build reliable long-term buyer relationships.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#marketplace" data-page="marketplace">Find produce</a>
+              <a class="btn secondary" href="#auth" data-page="auth">Join the marketplace</a>
+            </div>
+            <div class="trust-row" aria-label="Platform benefits">
+              <span>Verified farmers</span>
+              <span>Traceable orders</span>
+              <span>Recurring supply</span>
+            </div>
+          </div>
+          <article class="hero-card">
+            <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=900&q=80" alt="Farm rows at sunrise" />
+            <div class="floating-stat"><strong>28%</strong><span>less waste through planned bulk orders</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="auth" class="page wrap section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Secure access</p>
+          <h2>Signup or login</h2>
+          <p>Create a farmer, buyer, or admin account. Passwords are hashed by the API and JWT tokens protect role-based routes.</p>
+        </div>
+        <div class="two-col">
+          <form class="card form-card" id="signupForm">
+            <h3>Create account</h3>
+            <label>Name<input name="name" required minlength="2" placeholder="Amina Green" /></label>
+            <label>Email<input name="email" type="email" required placeholder="amina@example.com" /></label>
+            <label>Password<input name="password" type="password" required minlength="8" placeholder="At least 8 characters" /></label>
+            <label>Role
+              <select name="role" id="signupRole">
+                <option value="farmer">Farmer</option>
+                <option value="buyer">Buyer</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
+            <label>Farm or business name<input name="profileName" placeholder="Green Valley Farm" /></label>
+            <button class="btn primary full" type="submit">Create account</button>
+          </form>
+          <div class="card form-card">
+            <form id="loginForm" class="stacked-form">
+              <h3>Login</h3>
+              <label>Email<input name="email" type="email" required /></label>
+              <label>Password<input name="password" type="password" required /></label>
+              <button class="btn primary full" type="submit">Login</button>
+              <p class="muted" id="authStatus">Not signed in.</p>
+            </form>
+            <form id="forgotPasswordForm" class="stacked-form divider-top">
+              <h3>Reset password</h3>
+              <label>Email<input name="email" type="email" required placeholder="account@example.com" /></label>
+              <button class="btn secondary full" type="submit">Generate reset token</button>
+              <label>Reset token<input name="token" placeholder="Paste token from email or development response" /></label>
+              <label>New password<input name="password" type="password" minlength="8" placeholder="At least 8 characters" /></label>
+              <button class="btn secondary full" id="resetPasswordButton" type="button">Set new password</button>
+              <p class="muted" id="resetStatus">Use forgot password if you cannot login.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="marketplace" class="page wrap section-pad">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Produce marketplace</p>
+            <h2>Browse fresh bulk produce</h2>
+            <p>Use clear faceted filters to narrow by category, location, price, stock, harvest timing, delivery, grade, and certification.</p>
+          </div>
+          <button class="btn secondary" id="loadListings" type="button">Refresh listings</button>
+        </div>
+        <form id="filterForm" class="filters card">
+          <input name="search" placeholder="Search tomatoes, mangoes, leafy greens..." />
+          <select name="category">
+            <option value="">All categories</option>
+            <option>Vegetables</option>
+            <option>Fruits</option>
+            <option>Herbs</option>
+            <option>Grains</option>
+            <option>Dairy</option>
+          </select>
+          <input name="location" placeholder="City or region" />
+          <input name="minPrice" type="number" min="0" step="0.01" placeholder="Min price" />
+          <input name="maxPrice" type="number" min="0" step="0.01" placeholder="Max price" />
+          <input name="minQuantity" type="number" min="0" placeholder="Min quantity" />
+          <input name="minimumOrderQuantity" type="number" min="0" placeholder="Max MOQ" />
+          <select name="qualityGrade">
+            <option value="">Any grade</option>
+            <option value="premium">Premium</option>
+            <option value="grade_a">Grade A</option>
+            <option value="grade_b">Grade B</option>
+            <option value="processing">Processing</option>
+          </select>
+          <label class="check"><input name="deliveryAvailable" type="checkbox" value="true" /> Delivery</label>
+          <label class="check"><input name="organicCertified" type="checkbox" value="true" /> Certified organic</label>
+          <button class="btn primary" type="submit">Apply filters</button>
+        </form>
+        <div id="listingGrid" class="listing-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="listing-detail" class="page wrap section-pad">
+        <button class="btn ghost" data-page="marketplace" type="button">← Back to marketplace</button>
+        <div id="listingDetail" class="detail-layout"></div>
+      </section>
+
+      <section id="farmer-dashboard" class="page wrap section-pad">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Farmer dashboard</p>
+            <h2>Manage produce, stock, and buyer requests</h2>
+          </div>
+          <a class="btn primary" href="#add-listing" data-page="add-listing">Add produce</a>
+        </div>
+        <div class="dashboard-grid">
+          <article class="stat-card"><span>Available listings</span><strong id="farmerListingsCount">0</strong></article>
+          <article class="stat-card"><span>Low stock alerts</span><strong>3</strong></article>
+          <article class="stat-card"><span>Completion rate</span><strong>94%</strong></article>
+        </div>
+        <div class="card timeline">
+          <h3>Next actions</h3>
+          <p>Accept, reject, or counter buyer orders. Mark stock as available, low stock, sold out, or not available.</p>
+          <ul>
+            <li>Review pending and preorder requests based on harvest dates.</li>
+            <li>Upload produce photos and certifications for buyer confidence.</li>
+            <li>Track preparing, pickup, delivery, and completed orders.</li>
+          </ul>
+        </div>
+        <div class="section-heading split-heading compact-heading">
+          <h3>My uploaded products</h3>
+          <button class="btn secondary" id="loadMyListings" type="button">Load my products</button>
+        </div>
+        <div id="myListings" class="order-list"></div>
+      </section>
+
+      <section id="buyer-dashboard" class="page wrap section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Buyer dashboard</p>
+          <h2>Source reliable local supply</h2>
+          <p>Restaurants, hotels, resorts, supermarkets, caterers, exporters, and market vendors can track orders and recurring agreements.</p>
+        </div>
+        <div class="dashboard-grid">
+          <article class="stat-card"><span>Open requests</span><strong>7</strong></article>
+          <article class="stat-card"><span>Active suppliers</span><strong>12</strong></article>
+          <article class="stat-card"><span>Recurring contracts</span><strong>4</strong></article>
+        </div>
+      </section>
+
+      <section id="add-listing" class="page wrap section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Farmer tools</p>
+          <h2>Add produce listing</h2>
+          <p>Keep buyer expectations clear with harvest dates, stock, minimum order quantities, quality grade, and delivery details.</p>
+        </div>
+        <form id="listingForm" class="card form-card wide-form">
+          <label>Produce name<input name="produceName" required placeholder="Roma tomatoes" /></label>
+          <label>Category<input name="category" required placeholder="Vegetables" /></label>
+          <label>Description<textarea name="description" placeholder="Freshly harvested, firm, suitable for sauces and salads."></textarea></label>
+          <div class="form-row">
+            <label>Quantity<input name="quantityAvailable" type="number" required min="0" value="100" /></label>
+            <label>Unit<input name="unit" required value="kg" /></label>
+            <label>Price per unit<input name="pricePerUnit" type="number" min="0" step="0.01" required value="2.50" /></label>
+          </div>
+          <div class="form-row">
+            <label>Harvest date<input name="harvestDate" type="date" required /></label>
+            <label>Minimum order<input name="minimumOrderQuantity" type="number" min="0" value="20" /></label>
+            <label>Quality grade
+              <select name="qualityGrade"><option value="premium">Premium</option><option value="grade_a">Grade A</option><option value="grade_b">Grade B</option><option value="processing">Processing</option></select>
+            </label>
+          </div>
+          <label>City<input name="city" placeholder="Nakuru" /></label>
+          <label>Produce photo<input name="photo" type="file" accept="image/*" /></label>
+          <label>Status
+            <select name="status"><option value="available">Available</option><option value="low_stock">Low stock</option><option value="sold_out">Sold out</option><option value="not_available">Not available</option></select>
+          </label>
+          <label class="check"><input name="deliveryAvailable" type="checkbox" /> Delivery available</label>
+          <button class="btn primary full" type="submit">Upload and post to marketplace</button>
+          <p id="listingStatus" class="muted"></p>
+        </form>
+      </section>
+
+      <section id="order-request" class="page wrap section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Bulk order</p>
+          <h2>Request produce or recurring supply</h2>
+        </div>
+        <form id="orderForm" class="card form-card wide-form">
+          <input name="listingId" type="hidden" />
+          <div class="form-row">
+            <label>Quantity<input name="quantity" type="number" min="0.01" step="0.01" required /></label>
+            <label>Offered price<input name="offeredPrice" type="number" min="0" step="0.01" required /></label>
+            <label>Delivery method<select name="deliveryMethod"><option value="delivery">Delivery</option><option value="pickup">Pickup</option></select></label>
+          </div>
+          <label>Delivery address<input name="deliveryAddress" placeholder="Hotel loading bay, city" /></label>
+          <label>Requested date<input name="requestedDate" type="date" required /></label>
+          <label>Recurring supply<select name="frequency"><option value="none">One-time order</option><option value="weekly">Weekly supply</option><option value="monthly">Monthly supply</option></select></label>
+          <label>Notes<textarea name="notes" placeholder="Preferred delivery days, quality requirements, substitutions..."></textarea></label>
+          <button class="btn primary full" type="submit">Send order request</button>
+        </form>
+      </section>
+
+      <section id="orders" class="page wrap section-pad">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Order workflow</p>
+            <h2>Track every order from pending to completed</h2>
+          </div>
+          <button class="btn secondary" id="loadOrders" type="button">Load my orders</button>
+        </div>
+        <div id="ordersList" class="order-list"></div>
+      </section>
+
+      <section id="messages" class="page wrap section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Negotiation hub</p>
+          <h2>Message farmers and buyers</h2>
+          <p>Discuss price, quantity, harvest timing, delivery, substitutes, and quality requirements.</p>
+        </div>
+        <form id="messageForm" class="card form-card wide-form">
+          <label>Recipient user ID<input name="recipientId" placeholder="MongoDB user id" required /></label>
+          <label>Subject<input name="subject" placeholder="Weekly lettuce supply" /></label>
+          <label>Message<textarea name="body" required placeholder="Can you supply 80 kg every Monday and Thursday?"></textarea></label>
+          <button class="btn primary full" type="submit">Send message</button>
+        </form>
+      </section>
+
+      <section id="admin" class="page wrap section-pad">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Admin dashboard</p>
+            <h2>Verification, certifications, and platform analytics</h2>
+          </div>
+          <button class="btn secondary" id="loadAnalytics" type="button">Load analytics</button>
+        </div>
+        <div id="adminAnalytics" class="dashboard-grid"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <strong>FarmConnect Marketplace</strong>
+        <p>Reducing middlemen, improving price transparency, and connecting local farms to dependable bulk buyers.</p>
+      </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+  </body>
+</html>
