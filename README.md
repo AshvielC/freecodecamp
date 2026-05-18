@@ -28,15 +28,23 @@ Open `http://localhost:3000`.
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
-- `GET /api/listings`
+- `POST /api/auth/forgot-password`
+- `POST /api/auth/reset-password`
+- `GET /api/listings` authenticated users only
+- `GET /api/listings/mine` farmer only
 - `POST /api/listings` farmer only
 - `GET /api/listings/:id`
 - `POST /api/orders` buyer only
 - `PATCH /api/orders/:id/status` farmer/admin order updates
+- `PATCH /api/orders/:id/confirm-delivery` buyer closes delivered transactions
 - `GET /api/orders/my`
 - `POST /api/messages`
 - `GET /api/messages/conversations/:userId`
 - `GET /api/admin/analytics` admin only
+
+## Workflow Notes
+
+All farmers, buyers, and admins must create an account before accessing marketplace features. Farmers can upload product photos, post listings, mark stock available/low/sold/not available, receive preorder requests against harvest dates, accept or decline orders, track fulfillment, and message buyers. Buyers can browse by produce type and other filters, chat with sellers, place bulk or recurring orders, track order progress, and confirm delivery to complete a transaction.
 
 ## Security Notes
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const { body, param } = require('express-validator');
-const { createOrder, getMyOrders, updateOrderStatus } = require('../controllers/orderController');
+const { createOrder, getMyOrders, updateOrderStatus, confirmDelivery } = require('../controllers/orderController');
 const { protect, restrictTo } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
@@ -28,5 +28,6 @@ router.patch(
   validate,
   updateOrderStatus
 );
+router.patch('/:id/confirm-delivery', restrictTo('buyer'), [param('id').isMongoId()], validate, confirmDelivery);
 
 module.exports = router;

@@ -11,7 +11,9 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, trim: true, maxlength: 30 },
     verified: { type: Boolean, default: false },
     active: { type: Boolean, default: true },
-    lastLoginAt: Date
+    lastLoginAt: Date,
+    passwordResetToken: { type: String, select: false },
+    passwordResetExpires: { type: Date, select: false }
   },
   { timestamps: true }
 );

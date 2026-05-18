@@ -1,6 +1,6 @@
 const USER_ROLES = ['farmer', 'buyer', 'admin'];
 const BUYER_TYPES = ['market_vendor', 'resort', 'restaurant', 'hotel', 'supermarket', 'caterer', 'exporter', 'other'];
-const LISTING_STATUSES = ['available', 'low_stock', 'sold_out'];
+const LISTING_STATUSES = ['available', 'low_stock', 'sold_out', 'not_available'];
 const ORDER_STATUSES = [
   'pending',
   'accepted',

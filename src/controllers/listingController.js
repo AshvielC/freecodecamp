@@ -49,6 +49,15 @@ const getListings = async (req, res, next) => {
   }
 };
 
+const getMyListings = async (req, res, next) => {
+  try {
+    const listings = await ProduceListing.find({ farmerId: req.user._id }).sort({ createdAt: -1 });
+    res.json({ listings });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createListing = async (req, res, next) => {
   try {
     const profile = await FarmerProfile.findOne({ userId: req.user._id });
@@ -58,7 +67,8 @@ const createListing = async (req, res, next) => {
       farmerProfileId: profile?._id,
       location: req.body.location || profile?.location || {},
       verifiedFarmer: Boolean(profile?.verified || req.user.verified),
-      farmerRating: profile?.ratingAverage || 0
+      farmerRating: profile?.ratingAverage || 0,
+      status: req.body.status || 'available'
     });
 
     res.status(201).json({ listing });
@@ -103,4 +113,23 @@ const updateListing = async (req, res, next) => {
   }
 };
 
-module.exports = { getListings, createListing, getListing, updateListing };
+const updateListingStatus = async (req, res, next) => {
+  try {
+    const listing = await ProduceListing.findOneAndUpdate(
+      { _id: req.params.id, farmerId: req.user._id },
+      { status: req.body.status },
+      { new: true, runValidators: true }
+    );
+
+    if (!listing) {
+      res.status(404).json({ message: 'Listing not found or not owned by you.' });
+      return;
+    }
+
+    res.json({ listing });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getListings, getMyListings, createListing, getListing, updateListing, updateListingStatus };

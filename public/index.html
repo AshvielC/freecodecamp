@@ -71,13 +71,24 @@
             <label>Farm or business name<input name="profileName" placeholder="Green Valley Farm" /></label>
             <button class="btn primary full" type="submit">Create account</button>
           </form>
-          <form class="card form-card" id="loginForm">
-            <h3>Login</h3>
-            <label>Email<input name="email" type="email" required /></label>
-            <label>Password<input name="password" type="password" required /></label>
-            <button class="btn primary full" type="submit">Login</button>
-            <p class="muted" id="authStatus">Not signed in.</p>
-          </form>
+          <div class="card form-card">
+            <form id="loginForm" class="stacked-form">
+              <h3>Login</h3>
+              <label>Email<input name="email" type="email" required /></label>
+              <label>Password<input name="password" type="password" required /></label>
+              <button class="btn primary full" type="submit">Login</button>
+              <p class="muted" id="authStatus">Not signed in.</p>
+            </form>
+            <form id="forgotPasswordForm" class="stacked-form divider-top">
+              <h3>Reset password</h3>
+              <label>Email<input name="email" type="email" required placeholder="account@example.com" /></label>
+              <button class="btn secondary full" type="submit">Generate reset token</button>
+              <label>Reset token<input name="token" placeholder="Paste token from email or development response" /></label>
+              <label>New password<input name="password" type="password" minlength="8" placeholder="At least 8 characters" /></label>
+              <button class="btn secondary full" id="resetPasswordButton" type="button">Set new password</button>
+              <p class="muted" id="resetStatus">Use forgot password if you cannot login.</p>
+            </form>
+          </div>
         </div>
       </section>
 
@@ -139,13 +150,18 @@
         </div>
         <div class="card timeline">
           <h3>Next actions</h3>
-          <p>Accept, reject, or counter buyer orders. Mark stock as available, low stock, or sold out.</p>
+          <p>Accept, reject, or counter buyer orders. Mark stock as available, low stock, sold out, or not available.</p>
           <ul>
-            <li>Review pending restaurant order for Grade A tomatoes.</li>
-            <li>Upload organic certification for mango batch.</li>
-            <li>Confirm pickup window for Saturday hotel delivery.</li>
+            <li>Review pending and preorder requests based on harvest dates.</li>
+            <li>Upload produce photos and certifications for buyer confidence.</li>
+            <li>Track preparing, pickup, delivery, and completed orders.</li>
           </ul>
         </div>
+        <div class="section-heading split-heading compact-heading">
+          <h3>My uploaded products</h3>
+          <button class="btn secondary" id="loadMyListings" type="button">Load my products</button>
+        </div>
+        <div id="myListings" class="order-list"></div>
       </section>
 
       <section id="buyer-dashboard" class="page wrap section-pad">
@@ -184,8 +200,12 @@
             </label>
           </div>
           <label>City<input name="city" placeholder="Nakuru" /></label>
+          <label>Produce photo<input name="photo" type="file" accept="image/*" /></label>
+          <label>Status
+            <select name="status"><option value="available">Available</option><option value="low_stock">Low stock</option><option value="sold_out">Sold out</option><option value="not_available">Not available</option></select>
+          </label>
           <label class="check"><input name="deliveryAvailable" type="checkbox" /> Delivery available</label>
-          <button class="btn primary full" type="submit">Publish listing</button>
+          <button class="btn primary full" type="submit">Upload and post to marketplace</button>
           <p id="listingStatus" class="muted"></p>
         </form>
       </section>

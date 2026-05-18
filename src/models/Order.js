@@ -17,6 +17,9 @@ const orderSchema = new mongoose.Schema(
     requestedDate: { type: Date, required: true },
     deliveryDate: Date,
     status: { type: String, enum: ORDER_STATUSES, default: 'pending' },
+    isPreorder: { type: Boolean, default: false },
+    buyerConfirmedDeliveryAt: Date,
+    farmerRespondedAt: Date,
     recurringSupply: {
       frequency: { type: String, enum: SUPPLY_FREQUENCIES, default: 'none' },
       preferredDeliveryDays: [String],

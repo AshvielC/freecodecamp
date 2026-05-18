@@ -1,12 +1,13 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { body } = require('express-validator');
-const { register, login, me } = require('../controllers/authController');
+const { register, login, forgotPassword, resetPassword, me } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
 const router = express.Router();
 const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false });
+const passwordResetLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 5, standardHeaders: true, legacyHeaders: false });
 
 router.post(
   '/register',
@@ -27,6 +28,15 @@ router.post(
   [body('email').isEmail().normalizeEmail(), body('password').notEmpty()],
   validate,
   login
+);
+
+router.post('/forgot-password', passwordResetLimiter, [body('email').isEmail().normalizeEmail()], validate, forgotPassword);
+router.post(
+  '/reset-password',
+  passwordResetLimiter,
+  [body('token').trim().isLength({ min: 32 }), body('password').isLength({ min: 8 })],
+  validate,
+  resetPassword
 );
 
 router.get('/me', protect, me);
